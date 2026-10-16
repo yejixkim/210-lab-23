@@ -10,17 +10,19 @@
 #include <limits>
 using namespace std;
 
-const int SZ_NAMES = 200, SZ_COLORS = 25, MAX_AGE = 20;
+const int SZ_NAMES = 200,
+    SZ_COLORS = 25,
+    MAX_AGE = 20;
 
-int select_goat(const list<Goat>& trip);
-void delete_goat(list<Goat>& trip);
-void add_goat(list<Goat>& trip, string names[],
-              string colors[], int nameCount, int colorCount);
-void display_trip(const list<Goat>& trip);
+int select_goat(const list < Goat > & trip);
+void delete_goat(list < Goat > & trip);
+void add_goat(list < Goat > & trip, string names[],
+    string colors[], int nameCount, int colorCount);
+void display_trip(const list < Goat > & trip);
 int main_menu();
 
 int main() {
-    srand(static_cast<unsigned int>(time(0)));
+    srand(static_cast < unsigned int > (time(0)));
 
     string names[SZ_NAMES];
     string colors[SZ_COLORS];
@@ -58,7 +60,7 @@ int main() {
         return 1;
     }
 
-    list<Goat> trip;
+    list < Goat > trip;
     int choice;
 
     do {
@@ -101,13 +103,13 @@ int main_menu() {
 
         cout << "Invalid choice. Enter a number from 1 to 4.\n";
         cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cin.ignore(numeric_limits < streamsize > ::max(), '\n');
     }
 }
 
 // add a randomly generated goat
-void add_goat(list<Goat>& trip, string names[],
-              string colors[], int nameCount, int colorCount) {
+void add_goat(list < Goat > & trip, string names[],
+    string colors[], int nameCount, int colorCount) {
     string name = names[rand() % nameCount];
     string color = colors[rand() % colorCount];
     int age = rand() % (MAX_AGE + 1);
@@ -118,7 +120,7 @@ void add_goat(list<Goat>& trip, string names[],
 }
 
 // display numbered goats and return the user's selection
-int select_goat(const list<Goat>& trip) {
+int select_goat(const list < Goat > & trip) {
     if (trip.empty()) {
         cout << "\nThere are no goats in the trip.\n";
         return 0;
@@ -126,11 +128,11 @@ int select_goat(const list<Goat>& trip) {
 
     int number = 1;
 
-    for (const Goat& goat : trip) {
-        cout << "[" << number << "] "
-             << goat.get_name() << " ("
-             << goat.get_age() << ", "
-             << goat.get_color() << ")\n";
+    for (const Goat & goat: trip) {
+        cout << "[" << number << "] " <<
+            goat.get_name() << " (" <<
+            goat.get_age() << ", " <<
+            goat.get_color() << ")\n";
         number++;
     }
 
@@ -141,15 +143,60 @@ int select_goat(const list<Goat>& trip) {
 
         if (cin >> choice &&
             choice >= 0 &&
-            choice <= static_cast<int>(trip.size())) {
+            choice <= static_cast < int > (trip.size())) {
             return choice;
         }
 
         cout << "Invalid selection. Try again.\n";
         cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cin.ignore(numeric_limits < streamsize > ::max(), '\n');
     }
 }
 
+// delete a goat from the trip
+void delete_goat(list < Goat > & trip) {
+    if (trip.empty()) {
+        cout << "\nThere are no goats to delete.\n";
+        return;
+    }
 
+    cout << "\nWhich goat would you like to delete?\n";
+    int choice = select_goat(trip);
 
+    if (choice == 0) {
+        cout << "Deletion cancelled.\n";
+        return;
+    }
+
+    auto it = trip.begin();
+
+    for (int i = 1; i < choice; i++) {
+        ++it;
+    }
+
+    cout << "Deleted " << it -> get_name() << ".\n";
+    trip.erase(it);
+}
+
+// display the current trip
+void display_trip(const list < Goat > & trip) {
+    cout << "\n========== CURRENT TRIP ==========\n";
+
+    if (trip.empty()) {
+        cout << "There are no goats in the trip yet.\n";
+    } else {
+        int number = 1;
+
+        for (const Goat & goat: trip) {
+            cout << "[" << number << "] " <<
+                goat.get_name() << " (" <<
+                goat.get_age() << ", " <<
+                goat.get_color() << ")\n";
+            number++;
+        }
+
+        cout << "Total goats: " << trip.size() << '\n';
+    }
+
+    cout << "==================================\n";
+}
