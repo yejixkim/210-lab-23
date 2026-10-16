@@ -1,11 +1,34 @@
+// COMSC 210 | Lab 23 | Yeji Kim
+
 #include <iostream>
 #include <fstream>
 #include <iomanip>
 #include <list>
 #include "Goat.h"
+#include <cstdlib>
+#include <ctime>
 using namespace std;
 
 const int SZ_NAMES = 200, SZ_COLORS = 25, MAX_AGE = 20;
+
+// add Goat constructors
+Goat(string n) {
+    name = n;
+    age = 0;
+    color = "";
+}
+
+Goat(string n, int a) {
+    name = n;
+    age = a;
+    color = "";
+}
+
+Goat(string n, int a, string c) {
+    name = n;
+    age = a;
+    color = c;
+}
 
 int select_goat(list<Goat> trip);
 void delete_goat(list<Goat> &trip);
